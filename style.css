@@ -1,0 +1,131 @@
+:root {
+    --background: #121212;
+    --menuBar: #181818;
+    --topElement: #404040;
+    --bottomElement: #282828;
+    --primaryText: #ffffff;
+    --secondaryText: #b3b3b3;
+    --ticTac: #e069a4;
+    --toe: #69a4e0;
+}
+
+html, body {
+    font-family: 'Rubik', sans-serif;
+}
+
+body {
+    position: relative;
+    background-color: var(--background);
+    display: flex;
+    flex-direction: column;
+}
+
+#title {
+    color: var(--primaryText);
+    font-size: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+#tic {
+    color: var(--ticTac);
+}
+
+#tac {
+    background: -webkit-linear-gradient(0deg, var(--ticTac), var(--toe));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#toe {
+    color: var(--toe);
+}
+
+.tic-tac-style {
+    color: var(--ticTac);
+    font-size: 180px;
+    font-style: bold;
+}
+
+.toe-style {
+    color: var(--toe);
+    font-size: 120px;
+    font-style: bold;
+}
+
+.line {
+    background: linear-gradient(90deg, var(--ticTac), var(--toe));
+    height: 1px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+#gameboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    width: 500px;
+    height: 500px;
+    background-color: var(--bottomElement);
+    margin: 10px 0px 10px 0px;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+#tiles {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    background: linear-gradient(135deg, var(--ticTac), var(--toe));
+    margin: 10px;
+}
+
+.tile {
+    user-select: none;
+    margin: 3px;
+    width: 32%;
+    height: 32%;
+    background-color: var(--topElement);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-content: center;
+    font-style: italic;
+    color: var(--secondaryText);
+    font-size: 12px;
+    padding: 5px 10px 5px 20px;
+}
+
+#red-heart {
+    color: red;
+    font-style: normal;
+    padding: 0px 3px 0px 4px;
+}
+
+#coffee {
+    font-style: normal;
+    padding: 0px 3px 0px 4px;
+}
+
+#github-profile {
+    font-style: normal;
+    padding: 0px 3px 0px 4px;
+}
