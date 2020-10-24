@@ -7,8 +7,8 @@ const Player = (name, mark) => {
     return { name, mark, getName, getMark };
 };
 
-const playerOne = Player('Player One', 'x');
-const playerTwo = Player('Player Two', 'o');
+const playerOne = Player('Player One', '❌');
+const playerTwo = Player('Player Two', '〇');
 
 // Tile object Factory
 const tileFactory = (tileNum) => {

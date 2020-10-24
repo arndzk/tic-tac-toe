@@ -48,11 +48,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom: 25px;
     width: 50%;
     height: 50%;
     color: var(--ticTac);
-    font-size: 180px;
+    font-size: 110px;
     font-style: bold;
 }
 
@@ -61,11 +60,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom: 25px;
+    padding-bottom: 21px;
     width: 50%;
     height: 50%;
     color: var(--toe);
-    font-size: 180px;
+    font-size: 120px;
     font-style: bold;
 }
 
@@ -93,7 +92,6 @@ body {
     background-color: var(--bottomElement);
     margin: 10px 0px 10px 0px;
     border-radius: 5px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 @media (max-width: 320px) {
@@ -104,14 +102,14 @@ body {
     .tic-tac-style {
         max-height: 50%;
         max-width: 50%;
-        font-size: 100px;
-        padding-bottom: 20px;
+        font-size: 80px;
+        padding-top: 5px;
     }
     .toe-style {
         max-height: 50%;
         max-width: 50%;
-        font-size: 100px;
-        padding-bottom: 20px;
+        font-size: 80px;
+        padding-bottom: 10px;
     }
 }
 
