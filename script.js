@@ -1,10 +1,14 @@
+let playerTurn = true;
+
 // Player Factory
 const Player = (name, mark) => {
     const getName = () => name;
     const getMark = () => mark;
-
     return { name, mark, getName, getMark };
 };
+
+const playerOne = Player('Player One', 'x');
+const playerTwo = Player('Player Two', 'o');
 
 // Tile object Factory
 const tileFactory = (tileNum) => {
@@ -36,32 +40,48 @@ const gameBoardModule = (() => {
 
 // Generate the gameboard tiles in the DOM
 const dynamicDomTilesModule = (() => {
+    console.log(`generating tiles...`)
     let tiles = document.getElementById('tiles');
-    for (let i = 0; i < 9; i++) {
-        let tile = document.createElement('div');
-        tile.classList.add(`tile`);
-        tile.setAttribute('id', `tile-${i + 1}`);
-        tile.addEventListener('click', markTile);
-        tiles.appendChild(tile);
+    let counter = 1;
+    for (let i = 0; i < 3; i++) {
+        console.log(`generating row ${i + 1}...`);
+        let tileRow = document.createElement('div');
+        tileRow.setAttribute('id',`tile-row-${i + 1}`);
+        tileRow.classList.add(`tile-row`);
+        for (let j = 0; j < 3; j++) {
+            console.log(`generating tile ${counter}...`);
+            let tile = document.createElement('div');
+            tile.classList.add(`tile`);
+            tile.setAttribute('id', `tile-${counter++}`);
+            tile.addEventListener('click', markTile);
+            tileRow.appendChild(tile);
+        }
+        tiles.appendChild(tileRow);
     }
+    // for (let i = 0; i < 9; i++) {
+    //     let tile = document.createElement('div');
+    //     tile.classList.add(`tile`);
+    //     tile.setAttribute('id', `tile-${i + 1}`);
+    //     tile.addEventListener('click', markTile);
+    //     tiles.appendChild(tile);
+    // }
 })();
 
 function markTile() {
     let whichTile = this.getAttribute('id');
-
-    let ticTac = document.createElement('div');
-    ticTac.classList.add('tic-tac-style');
-    ticTac.innerHTML = `x`;
-
-    let toe = document.createElement('div');
-    toe.classList.add('toe-style');
-    toe.innerHTML = `o`;
-
-    this.appendChild(ticTac);
-
+    let newMark = document.createElement('div');
+    if (playerTurn == true) {
+        newMark.classList.add('tic-tac-style');
+        newMark.innerHTML = playerOne.getMark();
+    }
+    else if (playerTurn == false) {
+        newMark.classList.add('toe-style');
+        newMark.innerHTML = playerTwo.getMark();
+    }
+    this.appendChild(newMark);
     this.removeEventListener('click', markTile);
-
-    updateTileMark(whichTile, ticTac.innerHTML);
+    updateTileMark(whichTile, newMark.innerHTML);
+    playerTurn = !playerTurn;
 }
 
 const updateTileMark = (tileId, tileMark) => {
