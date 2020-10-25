@@ -96,12 +96,138 @@ body {
     border-radius: 5px;
 }
 
+.label-wrap {
+    background: linear-gradient(90deg, var(--ticTac), var(--toe));
+    border-radius: 30px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 30px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-wrap {
+    background: linear-gradient(90deg, var(--ticTac), var(--toe));
+    border-radius: 30px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 30px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-game-background {
+    background-color: var(--bottomElement);
+    border-radius: 30px;
+    width: 99%;
+    height: 95%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.button-wrap:hover .start-game-background{
+    background: linear-gradient(90deg, var(--ticTac), var(--toe));
+}
+
+.button-wrap:hover #start-game{
+    color: var(--primaryText);
+}
+
 #new-game-form {
+    user-select: none;
+    display: flex;
+    flex-direction: column;
     background-color: var(--bottomElement);
     width: 99%;
     height: 99%;
     margin: 1px;
     border-radius: 5px;
+}
+
+.form-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    background: -webkit-linear-gradient(0deg, var(--ticTac), var(--toe));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 10px 0px 10px 0px;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    padding: 10px 0px 10px 0px;
+}
+
+.form-label {
+    color: var(--primaryText);
+    border-radius: 30px;
+}
+
+#player-one-label {
+    color: var(--toe);
+    border: 1px solid var(--toe);
+    padding: 10px;
+}
+
+#player-two-label {
+    color: var(--ticTac);
+    border: 1px solid var(--ticTac);
+    padding: 10px;
+}
+
+.play-ai-background {
+    background-color: var(--bottomElement);
+    border-radius: 30px;
+    width: 99%;
+    height: 95%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#play-ai-label {
+    background: -webkit-linear-gradient(0deg, var(--ticTac), var(--toe));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 10px;
+}
+
+.button-wrap:not(:hover) #start-game{
+    background: -webkit-linear-gradient(0deg, var(--ticTac), var(--toe));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 10px;
+}
+
+.button-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    padding: 10px 0px 10px 0px;
 }
 
 #gameboard {

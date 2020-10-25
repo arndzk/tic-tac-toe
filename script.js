@@ -69,6 +69,79 @@ const dynamicNewGameForm = (() => {
     let newGameFormWrapper = document.createElement('div');
     newGameForm.setAttribute('id', 'new-game-form');
     newGameFormWrapper.classList.add('border-wrap');
+    
+    let newGameHeader = document.createElement('div');
+    let formLineTop = document.createElement('div');
+    let playerOneField = document.createElement('div');
+    let formLineMiddleTop = document.createElement('div');
+    let playerTwoField = document.createElement('div');
+    let formLineMiddleBottom = document.createElement('div');
+    let playWithAIField = document.createElement('div');
+    let formLineBottom = document.createElement('div');
+    let newGameButtonField = document.createElement('div');
+
+    newGameHeader.classList.add('form-header');
+    newGameHeader.innerHTML = `New Game`
+    playerOneField.classList.add('input-field');
+    playerTwoField.classList.add('input-field');
+    playWithAIField.classList.add('input-field');
+    newGameButtonField.classList.add('button-field');
+    formLineTop.classList.add('line');
+    formLineMiddleTop.classList.add('line');
+    formLineMiddleBottom.classList.add('line');
+    formLineBottom.classList.add('line');
+
+    // playerOneField Children
+    let playerOneFieldText = document.createElement('label');
+    playerOneFieldText.setAttribute('id', 'player-one-label');
+    playerOneFieldText.classList.add('form-label');
+    playerOneFieldText.textContent = `Player 1`;
+    let playerOneFieldInput = document.createElement('input');
+    playerOneField.appendChild(playerOneFieldText);
+
+    // playerTwoField Children
+    let playerTwoFieldText = document.createElement('label');
+    playerTwoFieldText.setAttribute('id', 'player-two-label');
+    playerTwoFieldText.classList.add('form-label');
+    playerTwoFieldText.textContent = `Player 2`;
+    playerTwoField.appendChild(playerTwoFieldText);
+
+    // playWithAI Children
+    let playWithAIFieldTextWrapper = document.createElement('div');
+    playWithAIFieldTextWrapper.classList.add('label-wrap');
+    let playWithAIFieldTextBackground = document.createElement('div');
+    playWithAIFieldTextBackground.classList.add('play-ai-background')
+    let playWithAIFieldText = document.createElement('label');
+    playWithAIFieldText.setAttribute('id', 'play-ai-label');
+    playWithAIFieldText.classList.add('form-label');
+    playWithAIFieldText.textContent = `vs. AI`;
+    playWithAIFieldTextBackground.appendChild(playWithAIFieldText);
+    playWithAIFieldTextWrapper.appendChild(playWithAIFieldTextBackground);
+    playWithAIField.appendChild(playWithAIFieldTextWrapper);
+
+    // newGameButtonField Children
+    let newGameButtonFieldTextWrapper = document.createElement('div');
+    newGameButtonFieldTextWrapper.classList.add('button-wrap');
+    let newGameButtonFieldTextBackground = document.createElement('div');
+    newGameButtonFieldTextBackground.classList.add('start-game-background')
+    let newGameButtonFieldText = document.createElement('div');
+    newGameButtonFieldText.setAttribute('id', 'start-game');
+    newGameButtonFieldText.classList.add('form-label');
+    newGameButtonFieldText.innerHTML = `Start Game`;
+    newGameButtonFieldTextBackground.appendChild(newGameButtonFieldText);
+    newGameButtonFieldTextWrapper.appendChild(newGameButtonFieldTextBackground);
+    newGameButtonField.appendChild(newGameButtonFieldTextWrapper);
+
+    newGameForm.appendChild(newGameHeader);
+    newGameForm.appendChild(formLineTop);
+    newGameForm.appendChild(playerOneField);
+    newGameForm.appendChild(formLineMiddleTop);
+    newGameForm.appendChild(playerTwoField);
+    newGameForm.appendChild(formLineMiddleBottom);
+    newGameForm.appendChild(playWithAIField);
+    newGameForm.appendChild(formLineBottom);
+    newGameForm.appendChild(newGameButtonField);
+    
     newGameFormWrapper.appendChild(newGameForm);
     container.appendChild(newGameFormWrapper);
 })();
