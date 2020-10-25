@@ -1,4 +1,5 @@
 let playerTurn = true;
+let multiplayer = false;
 
 // Player Factory
 const Player = (name, mark) => {
@@ -58,13 +59,18 @@ const dynamicDomTilesModule = (() => {
         }
         tiles.appendChild(tileRow);
     }
-    // for (let i = 0; i < 9; i++) {
-    //     let tile = document.createElement('div');
-    //     tile.classList.add(`tile`);
-    //     tile.setAttribute('id', `tile-${i + 1}`);
-    //     tile.addEventListener('click', markTile);
-    //     tiles.appendChild(tile);
-    // }
+})();
+
+// Generate new game form
+
+const dynamicNewGameForm = (() => {
+    let container = document.querySelector('#container');
+    let newGameForm = document.createElement('div');
+    let newGameFormWrapper = document.createElement('div');
+    newGameForm.setAttribute('id', 'new-game-form');
+    newGameFormWrapper.classList.add('border-wrap');
+    newGameFormWrapper.appendChild(newGameForm);
+    container.appendChild(newGameFormWrapper);
 })();
 
 function markTile() {
