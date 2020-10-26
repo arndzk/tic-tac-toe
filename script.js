@@ -84,6 +84,7 @@ const dynamicNewGameForm = (() => {
     newGameHeader.innerHTML = `New Game`
     playerOneField.classList.add('input-field');
     playerTwoField.classList.add('input-field');
+    playerTwoField.setAttribute('id', 'player-two-field');
     playWithAIField.classList.add('input-field');
     newGameButtonField.classList.add('button-field');
     formLineTop.classList.add('line');
@@ -96,15 +97,30 @@ const dynamicNewGameForm = (() => {
     playerOneFieldText.setAttribute('id', 'player-one-label');
     playerOneFieldText.classList.add('form-label');
     playerOneFieldText.textContent = `Player 1`;
+    let playerOneFieldInputDiv = document.createElement('div');
+    playerOneFieldInputDiv.classList.add('player-input-div');
     let playerOneFieldInput = document.createElement('input');
+    playerOneFieldInput.setAttribute('type', 'text');
+    playerOneFieldInput.setAttribute('id', 'player-one-input');
+    playerOneFieldInput.classList.add('player-input');
     playerOneField.appendChild(playerOneFieldText);
+    playerOneFieldInputDiv.appendChild(playerOneFieldInput);
+    playerOneField.appendChild(playerOneFieldInputDiv);
 
     // playerTwoField Children
     let playerTwoFieldText = document.createElement('label');
     playerTwoFieldText.setAttribute('id', 'player-two-label');
     playerTwoFieldText.classList.add('form-label');
     playerTwoFieldText.textContent = `Player 2`;
+    let playerTwoFieldInputDiv = document.createElement('div');
+    playerTwoFieldInputDiv.classList.add('player-input-div');
+    let playerTwoFieldInput = document.createElement('input');
+    playerTwoFieldInput.setAttribute('type', 'text');
+    playerTwoFieldInput.setAttribute('id', 'player-two-input');
+    playerTwoFieldInput.classList.add('player-input');
     playerTwoField.appendChild(playerTwoFieldText);
+    playerTwoFieldInputDiv.appendChild(playerTwoFieldInput);
+    playerTwoField.appendChild(playerTwoFieldInputDiv);
 
     // playWithAI Children
     let playWithAIFieldTextWrapper = document.createElement('div');
@@ -118,6 +134,14 @@ const dynamicNewGameForm = (() => {
     playWithAIFieldTextBackground.appendChild(playWithAIFieldText);
     playWithAIFieldTextWrapper.appendChild(playWithAIFieldTextBackground);
     playWithAIField.appendChild(playWithAIFieldTextWrapper);
+    let playWithAICheckboxDiv = document.createElement('div');
+    playWithAICheckboxDiv.classList.add('ai-checkbox-div');
+    let playWithAICheckbox = document.createElement('input');
+    playWithAICheckbox.setAttribute('id', 'ai-checkbox');
+    playWithAICheckbox.setAttribute('type', 'checkbox');
+    playWithAICheckboxDiv.appendChild(playWithAICheckbox);
+    playWithAIField.appendChild(playWithAICheckboxDiv);
+
 
     // newGameButtonField Children
     let newGameButtonFieldTextWrapper = document.createElement('div');

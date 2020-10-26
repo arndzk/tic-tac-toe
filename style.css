@@ -114,7 +114,7 @@ body {
 .button-wrap {
     background: linear-gradient(90deg, var(--ticTac), var(--toe));
     border-radius: 30px;
-    padding: 10px;
+    padding: 10px 0px 10px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,11 +138,11 @@ body {
     flex-wrap: nowrap;
 }
 
-.button-wrap:hover .start-game-background{
+.button-wrap:hover .start-game-background {
     background: linear-gradient(90deg, var(--ticTac), var(--toe));
 }
 
-.button-wrap:hover #start-game{
+.button-wrap:hover #start-game {
     color: var(--primaryText);
 }
 
@@ -176,6 +176,74 @@ body {
     align-items: center;
     font-size: 24px;
     padding: 10px 0px 10px 0px;
+}
+
+.player-input-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    height: 50px;
+}
+
+.player-input {
+    outline: none;
+    text-indent: 0.5em;
+    color: var(--primaryText);
+    font-size: 20px;
+    height: 30px;
+    border-radius: 30px;
+    background-color: var(--bottomElement);
+}
+
+#player-one-input {
+    border: 1px solid var(--toe);
+    color: var(--toe);
+}
+
+#player-one-input:focus {
+    border: 1px solid var(--primaryText);
+    color: var(--primaryText);
+}
+
+#player-two-input {
+    border: 1px solid var(--ticTac);
+    color: var(--ticTac);
+}
+
+#player-two-input:focus {
+    border: 1px solid var(--primaryText);
+    color: var(--primaryText);
+}
+
+.ai-checkbox-div {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#ai-checkbox {
+    appearance: none;
+    background-color: var(--bottomElement);
+    border: 1px solid var(--ticTac);
+    border-radius: 3px;
+    padding: 9px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ai-checkbox:checked #player-two-field {
+    color: var(--secondaryText);
+}
+
+#ai-checkbox:checked:after {
+    content: '\1F5F8';
+    font-size: 32px;
+    position: absolute;
+    color: var(--toe);
 }
 
 .form-label {
