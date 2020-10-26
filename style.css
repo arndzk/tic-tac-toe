@@ -51,7 +51,7 @@ body {
     width: 50%;
     height: 50%;
     color: var(--ticTac);
-    font-size: 110px;
+    font-size: 160px;
     font-style: bold;
 }
 
@@ -197,8 +197,8 @@ body {
 }
 
 #player-one-input {
-    border: 1px solid var(--toe);
-    color: var(--toe);
+    border: 1px solid var(--ticTac);
+    color: var(--ticTac);
 }
 
 #player-one-input:focus {
@@ -207,8 +207,8 @@ body {
 }
 
 #player-two-input {
-    border: 1px solid var(--ticTac);
-    color: var(--ticTac);
+    border: 1px solid var(--toe);
+    color: var(--toe);
 }
 
 #player-two-input:focus {
@@ -226,7 +226,7 @@ body {
 #ai-checkbox {
     appearance: none;
     background-color: var(--bottomElement);
-    border: 1px solid var(--ticTac);
+    border: 1px solid var(--toe);
     border-radius: 3px;
     padding: 9px;
     position: relative;
@@ -243,7 +243,7 @@ body {
     content: '\1F5F8';
     font-size: 32px;
     position: absolute;
-    color: var(--toe);
+    color: var(--ticTac);
 }
 
 .form-label {
@@ -252,14 +252,14 @@ body {
 }
 
 #player-one-label {
-    color: var(--toe);
-    border: 1px solid var(--toe);
+    color: var(--ticTac);
+    border: 1px solid var(--ticTac);
     padding: 10px;
 }
 
 #player-two-label {
-    color: var(--ticTac);
-    border: 1px solid var(--ticTac);
+    color: var(--toe);
+    border: 1px solid var(--toe);
     padding: 10px;
 }
 
@@ -396,4 +396,33 @@ body {
 #github-profile {
     font-style: normal;
     padding: 0px 3px 0px 4px;
+}
+
+.invisible {
+    display: none;
+}
+
+.player-display {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-name {
+    margin: 30px;
+    padding: 5px;
+    border: 1px solid var(--background);
+    border-radius: 30px;
+    font-size: 24px;
+}
+
+#player-one {
+    color: var(--ticTac);
+}
+
+#player-two {
+    color: var(--toe);
+}
+
+.has-turn {
+    border-color: var(--primaryText);
 }

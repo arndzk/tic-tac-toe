@@ -1,5 +1,6 @@
 let playerTurn = true;
 let multiplayer = false;
+const players = [];
 
 // Player Factory
 const Player = (name, mark) => {
@@ -7,9 +8,6 @@ const Player = (name, mark) => {
     const getMark = () => mark;
     return { name, mark, getName, getMark };
 };
-
-const playerOne = Player('Player One', '❌');
-const playerTwo = Player('Player Two', '〇');
 
 // Tile object Factory
 const tileFactory = (tileNum) => {
@@ -69,6 +67,7 @@ const dynamicNewGameForm = (() => {
     let newGameFormWrapper = document.createElement('div');
     newGameForm.setAttribute('id', 'new-game-form');
     newGameFormWrapper.classList.add('border-wrap');
+    newGameFormWrapper.setAttribute('id', 'form-wrapper');
     
     let newGameHeader = document.createElement('div');
     let formLineTop = document.createElement('div');
@@ -165,7 +164,7 @@ const dynamicNewGameForm = (() => {
     newGameForm.appendChild(playWithAIField);
     newGameForm.appendChild(formLineBottom);
     newGameForm.appendChild(newGameButtonField);
-    
+    newGameButtonFieldTextWrapper.addEventListener('click', closeForm)
     newGameFormWrapper.appendChild(newGameForm);
     container.appendChild(newGameFormWrapper);
 })();
@@ -175,19 +174,56 @@ function markTile() {
     let newMark = document.createElement('div');
     if (playerTurn == true) {
         newMark.classList.add('tic-tac-style');
-        newMark.innerHTML = playerOne.getMark();
+        newMark.innerHTML = players[0].getMark();
     }
     else if (playerTurn == false) {
         newMark.classList.add('toe-style');
-        newMark.innerHTML = playerTwo.getMark();
+        newMark.innerHTML = players[1].getMark();
     }
     this.appendChild(newMark);
     this.removeEventListener('click', markTile);
     updateTileMark(whichTile, newMark.innerHTML);
     playerTurn = !playerTurn;
+    if (playerTurn == false) {
+        let playerOne = document.getElementById('player-one');
+        playerOne.classList.remove('has-turn');
+        let playerTwo = document.getElementById('player-two');
+        playerTwo.classList.add('has-turn');
+    } else {
+        let playerTwo = document.getElementById('player-two');
+        playerTwo.classList.remove('has-turn');
+        let playerOne = document.getElementById('player-one');
+        playerOne.classList.add('has-turn');
+    }
 }
 
 const updateTileMark = (tileId, tileMark) => {
     const tileNum = tileId.slice(-1);
     gameBoardModule.setTileMark(tileNum, tileMark);
+}
+
+function closeForm() {
+    let playerOneName = document.getElementById('player-one-input').value;
+    let playerTwoName = document.getElementById('player-two-input').value;
+    if(playerOneName == "" || playerTwoName == "") {
+        alert(`Please enter the players' names!`);
+    } else {
+        let select = document.getElementById('form-wrapper');
+        select.classList.add('invisible');
+        generatePlayers(playerOneName, playerTwoName);
+        updatePlayerNames();
+    }
+}
+
+function generatePlayers(playerOneName, playerTwoName) {
+    players.push(Player(playerOneName, '✕'));
+    players.push(Player(playerTwoName, '〇'));
+}
+
+function updatePlayerNames() {
+    let playerOne = document.getElementById('player-one');
+    playerOne.classList.add('has-turn');
+    let playerTwo = document.getElementById('player-two');
+    playerOne.innerHTML = players[0].getName();
+    playerTwo.innerHTML = players[1].getName();
 }
