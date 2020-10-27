@@ -11,7 +11,6 @@ const game = (() => {
     ];
     const checkForWinningCombo = (currentBoard) => {
         for (let i = 0; i <= 7; i++) {
-            if (currentBoard.every(tile => tile.tileMark != '')){ return `tie`; }
             if(currentBoard[winningCombos[i][0]].tileMark != '' && currentBoard[winningCombos[i][1]].tileMark != '' && currentBoard[winningCombos[i][2]].tileMark != '') {
                 //console.log(`checking ${winningCombos[i]} |${currentBoard[winningCombos[i][0]].tileMark}|${currentBoard[winningCombos[i][1]].tileMark}|${currentBoard[winningCombos[i][2]].tileMark}|`)
                 if (currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][1]].tileMark && currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][2]].tileMark) {
@@ -27,6 +26,7 @@ const game = (() => {
                 } else { continue; }
             }
         }
+        if (currentBoard.every(tile => tile.tileMark != '')){ return `tie`; }
     }
     return { checkForWinningCombo }
 })();
