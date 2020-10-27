@@ -12,6 +12,9 @@ const game = (() => {
     ];
     const checkForWinningCombo = (currentBoard) => {
         for (let i = 0; i <= 7; i++) {
+            if (currentBoard.every(tile => tile.tileMark != '')){
+                return `tie`;
+            }
             if(currentBoard[winningCombos[i][0]].tileMark != '' &&
                 currentBoard[winningCombos[i][1]].tileMark != '' && 
                 currentBoard[winningCombos[i][2]].tileMark != '') {
@@ -34,9 +37,6 @@ const game = (() => {
                 } else {
                     continue;
                 }
-            }
-            else if (currentBoard.every(tile => tile.tileMark != '')){
-                return `tie`;
             }
         }
     }
@@ -245,7 +245,7 @@ function markTile() {
         tiles.forEach(tile => tile.removeEventListener('click', markTile));
         console.log(`${outcome} wins!`);
     } else if (outcome == `tie`) {
-        console.log(`The game ends in a ${tie}!`);
+        console.log(`The game ends in a ${outcome}!`);
     }
 }
 
