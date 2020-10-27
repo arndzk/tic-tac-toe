@@ -1,10 +1,9 @@
 let playerTurn = true;
-let multiplayer = false;
+let multiplayer = true;
 const players = [];
 let outcome;
 
 const game = (() => {
-
     const winningCombos = [
         [0,1,2],[3,4,5],[6,7,8], // Horizontal
         [0,3,6],[1,4,7],[2,5,8], // Vertical
@@ -12,34 +11,23 @@ const game = (() => {
     ];
     const checkForWinningCombo = (currentBoard) => {
         for (let i = 0; i <= 7; i++) {
-            if (currentBoard.every(tile => tile.tileMark != '')){
-                return `tie`;
-            }
-            if(currentBoard[winningCombos[i][0]].tileMark != '' &&
-                currentBoard[winningCombos[i][1]].tileMark != '' && 
-                currentBoard[winningCombos[i][2]].tileMark != '') {
+            if (currentBoard.every(tile => tile.tileMark != '')){ return `tie`; }
+            if(currentBoard[winningCombos[i][0]].tileMark != '' && currentBoard[winningCombos[i][1]].tileMark != '' && currentBoard[winningCombos[i][2]].tileMark != '') {
                 //console.log(`checking ${winningCombos[i]} |${currentBoard[winningCombos[i][0]].tileMark}|${currentBoard[winningCombos[i][1]].tileMark}|${currentBoard[winningCombos[i][2]].tileMark}|`)
-                if (currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][1]].tileMark &&
-                    currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][2]].tileMark) {
+                if (currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][1]].tileMark && currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][2]].tileMark) {
                     let winningTiles = [];
                     winningTiles.push(`tile-${winningCombos[i][0] + 1}`);
                     winningTiles.push(`tile-${winningCombos[i][1] + 1}`);
                     winningTiles.push(`tile-${winningCombos[i][2] + 1}`);
-                    let aWinningTile = document.querySelector
                     winningTiles.forEach(tile => document.querySelector(`#${tile}`).childNodes[0].classList.add('winning-tile'));
                     if(currentBoard[winningCombos[i][0]].tileMark == '✕') {
                         return `player-one`;
-                    } else {
-                        return `player-two`;
-                    }
+                    } else { return `player-two`; }
                     break;
-                } else {
-                    continue;
-                }
+                } else { continue; }
             }
         }
     }
-
     return { checkForWinningCombo }
 })();
 
@@ -381,4 +369,8 @@ function resetGameBoard() {
     tiles.forEach(tile => tile.addEventListener('click', markTile));
     gameBoardModule.resetGameBoard();
     gameDisplay.resetGameStatus();
+    let select = document.querySelector('#display-play-again');
+    select.classList.add('invisible');
+    select = document.querySelector('#display-new-game');
+    select.classList.add('invisible');
 }
