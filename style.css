@@ -76,6 +76,7 @@ body {
 }
 
 #container {
+    margin-top: 20px;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -429,4 +430,21 @@ body {
 
 .winning-tile {
     color: var(--primaryText);
+}
+
+#game-status-display {
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0px 10px 0px;
+    font-size: 28px;
+}
+
+#game-status {
+    color: var(--primaryText);
+    margin: 0px 30px 0px 30px;
+    width: 180px;
+    text-align: center;
 }

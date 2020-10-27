@@ -7,7 +7,7 @@ const game = (() => {
 
     const winningCombos = [
         [0,1,2],[3,4,5],[6,7,8], // Horizontal
-        [0,3,6],[1,4,7],[3,5,8], // Vertical
+        [0,3,6],[1,4,7],[2,5,8], // Vertical
         [0,4,8],[2,4,6] // Diagonal
     ];
     const checkForWinningCombo = (currentBoard) => {
@@ -18,15 +18,14 @@ const game = (() => {
             if(currentBoard[winningCombos[i][0]].tileMark != '' &&
                 currentBoard[winningCombos[i][1]].tileMark != '' && 
                 currentBoard[winningCombos[i][2]].tileMark != '') {
-                    //console.log(`checking ${winningCombos[i]} |${currentBoard[winningCombos[i][0]].tileMark}|${currentBoard[winningCombos[i][1]].tileMark}|${currentBoard[winningCombos[i][2]].tileMark}|`)
+                //console.log(`checking ${winningCombos[i]} |${currentBoard[winningCombos[i][0]].tileMark}|${currentBoard[winningCombos[i][1]].tileMark}|${currentBoard[winningCombos[i][2]].tileMark}|`)
                 if (currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][1]].tileMark &&
                     currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][2]].tileMark) {
                     let winningTiles = [];
                     winningTiles.push(`tile-${winningCombos[i][0] + 1}`);
                     winningTiles.push(`tile-${winningCombos[i][1] + 1}`);
                     winningTiles.push(`tile-${winningCombos[i][2] + 1}`);
-                    console.table(winningTiles);
-                    //let aWinningTile = document.querySelector
+                    let aWinningTile = document.querySelector
                     winningTiles.forEach(tile => document.querySelector(`#${tile}`).childNodes[0].classList.add('winning-tile'));
                     if(currentBoard[winningCombos[i][0]].tileMark == '✕') {
                         return `player-one`;
@@ -42,6 +41,48 @@ const game = (() => {
     }
 
     return { checkForWinningCombo }
+})();
+
+const gameDisplay = (() => {
+    let turn = 1;
+    let gameStatus = `Turn ${turn}`;
+    const updateDisplay = (newGameStatus) => {
+        if (newGameStatus == 1) {
+            turn++;
+            gameStatus = `Turn ${turn}`;
+            let gameStatusElement = document.querySelector('#game-status');
+            gameStatusElement.innerHTML = gameStatus;
+        }
+        else if (newGameStatus == 'tie') {
+            gameStatus = 'Tie!';
+            let gameStatusElement = document.querySelector('#game-status');
+            gameStatusElement.innerHTML = gameStatus;
+            let select = document.querySelector('#display-play-again');
+            select.classList.remove('invisible');
+            select = document.querySelector('#display-new-game');
+            select.classList.remove('invisible');   
+        } else {
+            let winningPlayerName = document.querySelector(`#${newGameStatus}`).innerHTML; 
+            gameStatus = `${winningPlayerName} wins!`;
+            let gameStatusElement = document.querySelector('#game-status');
+            gameStatusElement.innerHTML = gameStatus;
+            let select = document.querySelector('#display-play-again');
+            select.classList.remove('invisible');
+            select = document.querySelector('#display-new-game');
+            select.classList.remove('invisible');
+        }
+    }
+    const getGameStatus = () => {
+        return gameStatus;
+    }
+    const resetGameStatus = () => {
+        turn = 1;
+        let gameStatus = `Turn ${turn}`;
+        let gameStatusElement = document.querySelector('#game-status');
+        gameStatusElement.innerHTML = gameStatus;
+    }
+
+    return { updateDisplay, getGameStatus, resetGameStatus };
 })();
 
 // Player Factory
@@ -75,7 +116,10 @@ const gameBoardModule = (() => {
     }
     const gameTiles = generateGameTiles();
     const getGameBoard = () => { return gameTiles };
-    return { getGameBoard, setTileMark };
+    const resetGameBoard = () => {
+        gameTiles.forEach(tile => tile.tileMark = '');
+    }
+    return { getGameBoard, setTileMark, resetGameBoard };
 })();
 
 
@@ -211,6 +255,53 @@ const dynamicNewGameForm = (() => {
     container.appendChild(newGameFormWrapper);
 })();
 
+// generate gameDisplay
+const dynamicGameDisplay = (() => {
+    let gameStatusDisplay = document.querySelector('#game-status-display');
+    let gameStatus = document.createElement('div');
+    gameStatus.setAttribute('id', 'game-status');
+    gameStatus.classList.add('invisible');
+    gameStatus.innerHTML = gameDisplay.getGameStatus();
+    
+    let playAgainButtonDiv = document.createElement('div');
+    playAgainButtonDiv.setAttribute('id', 'display-play-again');
+    playAgainButtonDiv.classList.add('invisible');
+    let newGameButtonDiv = document.createElement('div');
+    newGameButtonDiv.setAttribute('id', 'display-new-game');
+    newGameButtonDiv.classList.add('invisible');
+
+    let playAgainButtonWrapper = document.createElement('div');
+    playAgainButtonWrapper.classList.add('button-wrap');
+    let playAgainButtonBackground = document.createElement('div');
+    playAgainButtonBackground.classList.add('start-game-background')
+    let playAgainButtonText = document.createElement('div');
+    playAgainButtonText.setAttribute('id', 'play-again');
+    playAgainButtonText.classList.add('form-label');
+    playAgainButtonText.innerHTML = `Play Again`;
+    playAgainButtonBackground.appendChild(playAgainButtonText);
+    playAgainButtonWrapper.appendChild(playAgainButtonBackground);
+    playAgainButtonDiv.appendChild(playAgainButtonWrapper);
+
+    let newGameButtonWrapper = document.createElement('div');
+    newGameButtonWrapper.classList.add('button-wrap');
+    let newGameButtonBackground = document.createElement('div');
+    newGameButtonBackground.classList.add('start-game-background')
+    let newGameButtonText = document.createElement('div');
+    newGameButtonText.setAttribute('id', 'new-game');
+    newGameButtonText.classList.add('form-label');
+    newGameButtonText.innerHTML = `New Game`;
+    newGameButtonBackground.appendChild(newGameButtonText);
+    newGameButtonWrapper.appendChild(newGameButtonBackground);
+    newGameButtonDiv.appendChild(newGameButtonWrapper);
+    
+    gameStatusDisplay.appendChild(playAgainButtonDiv);
+    gameStatusDisplay.appendChild(gameStatus);
+    gameStatusDisplay.appendChild(newGameButtonDiv);
+
+    newGameButtonWrapper.addEventListener('click', function(){location.reload()});
+    playAgainButtonWrapper.addEventListener('click', resetGameBoard);
+})();
+
 function markTile() {
     let whichTile = this.getAttribute('id');
     let newMark = document.createElement('div');
@@ -239,13 +330,14 @@ function markTile() {
     }
     outcome = game.checkForWinningCombo(gameBoardModule.getGameBoard());
     if (outcome != null && outcome != `tie`) {
-        let tiles = []
+        let tiles = [];
         tiles = document.querySelectorAll('.tile');
-        console.log(tiles);
         tiles.forEach(tile => tile.removeEventListener('click', markTile));
-        console.log(`${outcome} wins!`);
+        gameDisplay.updateDisplay(outcome);
     } else if (outcome == `tie`) {
-        console.log(`The game ends in a ${outcome}!`);
+        gameDisplay.updateDisplay(outcome);
+    } else {
+        gameDisplay.updateDisplay(1);
     }
 }
 
@@ -264,6 +356,8 @@ function closeForm() {
         select.classList.add('invisible');
         generatePlayers(playerOneName, playerTwoName);
         updatePlayerNames();
+        select = document.querySelector('#game-status');
+        select.classList.remove('invisible');
     }
 }
 
@@ -278,4 +372,13 @@ function updatePlayerNames() {
     let playerTwo = document.getElementById('player-two');
     playerOne.innerHTML = players[0].getName();
     playerTwo.innerHTML = players[1].getName();
+}
+
+function resetGameBoard() {
+    let tiles = [];
+    tiles = document.querySelectorAll('.tile');
+    tiles.forEach(tile => tile.innerHTML = '');
+    tiles.forEach(tile => tile.addEventListener('click', markTile));
+    gameBoardModule.resetGameBoard();
+    gameDisplay.resetGameStatus();
 }
