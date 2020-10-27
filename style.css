@@ -426,3 +426,7 @@ body {
 .has-turn {
     border-color: var(--primaryText);
 }
+
+.winning-tile {
+    color: var(--primaryText);
+}

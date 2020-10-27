@@ -1,6 +1,48 @@
 let playerTurn = true;
 let multiplayer = false;
 const players = [];
+let outcome;
+
+const game = (() => {
+
+    const winningCombos = [
+        [0,1,2],[3,4,5],[6,7,8], // Horizontal
+        [0,3,6],[1,4,7],[3,5,8], // Vertical
+        [0,4,8],[2,4,6] // Diagonal
+    ];
+    const checkForWinningCombo = (currentBoard) => {
+        for (let i = 0; i <= 7; i++) {
+            if(currentBoard[winningCombos[i][0]].tileMark != '' &&
+                currentBoard[winningCombos[i][1]].tileMark != '' && 
+                currentBoard[winningCombos[i][2]].tileMark != '') {
+                    //console.log(`checking ${winningCombos[i]} |${currentBoard[winningCombos[i][0]].tileMark}|${currentBoard[winningCombos[i][1]].tileMark}|${currentBoard[winningCombos[i][2]].tileMark}|`)
+                if (currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][1]].tileMark &&
+                    currentBoard[winningCombos[i][0]].tileMark == currentBoard[winningCombos[i][2]].tileMark) {
+                    let winningTiles = [];
+                    winningTiles.push(`tile-${winningCombos[i][0] + 1}`);
+                    winningTiles.push(`tile-${winningCombos[i][1] + 1}`);
+                    winningTiles.push(`tile-${winningCombos[i][2] + 1}`);
+                    console.table(winningTiles);
+                    //let aWinningTile = document.querySelector
+                    winningTiles.forEach(tile => document.querySelector(`#${tile}`).childNodes[0].classList.add('winning-tile'));
+                    if(currentBoard[winningCombos[i][0]].tileMark == '✕') {
+                        return `player-one`;
+                    } else {
+                        return `player-two`;
+                    }
+                    break;
+                } else {
+                    continue;
+                }
+            }
+            else if (currentBoard.every(tile => tile.tileMark != '')){
+                return `tie`;
+            }
+        }
+    }
+
+    return { checkForWinningCombo }
+})();
 
 // Player Factory
 const Player = (name, mark) => {
@@ -32,23 +74,23 @@ const gameBoardModule = (() => {
         }
     }
     const gameTiles = generateGameTiles();
-    const getGameBoard = () => console.log(gameTiles);
+    const getGameBoard = () => { return gameTiles };
     return { getGameBoard, setTileMark };
 })();
 
 
 // Generate the gameboard tiles in the DOM
 const dynamicDomTilesModule = (() => {
-    console.log(`generating tiles...`)
+    //console.log(`generating tiles...`)
     let tiles = document.getElementById('tiles');
     let counter = 1;
     for (let i = 0; i < 3; i++) {
-        console.log(`generating row ${i + 1}...`);
+        //console.log(`generating row ${i + 1}...`);
         let tileRow = document.createElement('div');
         tileRow.setAttribute('id',`tile-row-${i + 1}`);
         tileRow.classList.add(`tile-row`);
         for (let j = 0; j < 3; j++) {
-            console.log(`generating tile ${counter}...`);
+            //console.log(`generating tile ${counter}...`);
             let tile = document.createElement('div');
             tile.classList.add(`tile`);
             tile.setAttribute('id', `tile-${counter++}`);
@@ -194,6 +236,16 @@ function markTile() {
         playerTwo.classList.remove('has-turn');
         let playerOne = document.getElementById('player-one');
         playerOne.classList.add('has-turn');
+    }
+    outcome = game.checkForWinningCombo(gameBoardModule.getGameBoard());
+    if (outcome != null && outcome != `tie`) {
+        let tiles = []
+        tiles = document.querySelectorAll('.tile');
+        console.log(tiles);
+        tiles.forEach(tile => tile.removeEventListener('click', markTile));
+        console.log(`${outcome} wins!`);
+    } else if (outcome == `tie`) {
+        console.log(`The game ends in a ${tie}!`);
     }
 }
 
