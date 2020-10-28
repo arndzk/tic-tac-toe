@@ -352,6 +352,7 @@ function closeForm() {
     let ai = document.getElementById('ai-checkbox');
     console.log(ai);
     if (ai.checked) {
+        game.SwitchMultiplayer();
         console.log('ai will be on!');
     } else {
         console.log('ai will be off!');
@@ -361,7 +362,7 @@ function closeForm() {
     } else {
         let select = document.getElementById('form-wrapper');
         select.classList.add('invisible');
-        generatePlayers(playerOneName, playerTwoName);
+        generatePlayers(playerOneName, playerTwoName, game.getMultiplayer());
         updatePlayerNames();
         select = document.querySelector('#game-status');
         select.classList.remove('invisible');
