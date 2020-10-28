@@ -1,9 +1,21 @@
-let playerTurn = true;
-let multiplayer = true;
 const players = [];
 let outcome;
 
 const game = (() => {
+    let playerTurn = true;
+    let multiplayer = true;
+    const switchPlayerTurn = () => {
+        playerTurn = !playerTurn;
+    }
+    const getPlayerTurn = () => {
+        return playerTurn;
+    }
+    const SwitchMultiplayer = () => {
+        multiplayer = !multiplayer;
+    }
+    const getMultiplayer = () => {
+        return multiplayer;
+    }
     const winningCombos = [
         [0,1,2],[3,4,5],[6,7,8], // Horizontal
         [0,3,6],[1,4,7],[2,5,8], // Vertical
@@ -28,7 +40,7 @@ const game = (() => {
         }
         if (currentBoard.every(tile => tile.tileMark != '')){ return `tie`; }
     }
-    return { checkForWinningCombo }
+    return { checkForWinningCombo, switchPlayerTurn, getPlayerTurn, SwitchMultiplayer, getMultiplayer }
 })();
 
 const gameDisplay = (() => {
@@ -70,7 +82,7 @@ const gameDisplay = (() => {
         gameStatusElement.innerHTML = gameStatus;
     }
 
-    return { updateDisplay, getGameStatus, resetGameStatus };
+    return { updateDisplay, getGameStatus, resetGameStatus, };
 })();
 
 // Player Factory
@@ -107,7 +119,7 @@ const gameBoardModule = (() => {
     const resetGameBoard = () => {
         gameTiles.forEach(tile => tile.tileMark = '');
     }
-    return { getGameBoard, setTileMark, resetGameBoard };
+    return { getGameBoard, setTileMark, resetGameBoard, gameTiles };
 })();
 
 
@@ -293,19 +305,19 @@ const dynamicGameDisplay = (() => {
 function markTile() {
     let whichTile = this.getAttribute('id');
     let newMark = document.createElement('div');
-    if (playerTurn == true) {
+    if (game.getPlayerTurn() == true) {
         newMark.classList.add('tic-tac-style');
         newMark.innerHTML = players[0].getMark();
     }
-    else if (playerTurn == false) {
+    else if (game.getMultiplayer() == true && game.getPlayerTurn() == false) {
         newMark.classList.add('toe-style');
         newMark.innerHTML = players[1].getMark();
     }
     this.appendChild(newMark);
     this.removeEventListener('click', markTile);
     updateTileMark(whichTile, newMark.innerHTML);
-    playerTurn = !playerTurn;
-    if (playerTurn == false) {
+    game.switchPlayerTurn();
+    if (game.getPlayerTurn() == false) {
         let playerOne = document.getElementById('player-one');
         playerOne.classList.remove('has-turn');
         let playerTwo = document.getElementById('player-two');
@@ -337,6 +349,13 @@ const updateTileMark = (tileId, tileMark) => {
 function closeForm() {
     let playerOneName = document.getElementById('player-one-input').value;
     let playerTwoName = document.getElementById('player-two-input').value;
+    let ai = document.getElementById('ai-checkbox');
+    console.log(ai);
+    if (ai.checked) {
+        console.log('ai will be on!');
+    } else {
+        console.log('ai will be off!');
+    }
     if(playerOneName == "" || playerTwoName == "") {
         alert(`Please enter the players' names!`);
     } else {
@@ -349,9 +368,14 @@ function closeForm() {
     }
 }
 
-function generatePlayers(playerOneName, playerTwoName) {
-    players.push(Player(playerOneName, '✕'));
-    players.push(Player(playerTwoName, '〇'));
+function generatePlayers(playerOneName, playerTwoName, multiplayer) {
+    if (multiplayer == false) {
+        players.push(Player(playerOneName, '✕'));
+        players.push(Player('Computer', '〇'));
+    } else {
+        players.push(Player(playerOneName, '✕'));
+        players.push(Player(playerTwoName, '〇'));
+    }
 }
 
 function updatePlayerNames() {
@@ -373,4 +397,17 @@ function resetGameBoard() {
     select.classList.add('invisible');
     select = document.querySelector('#display-new-game');
     select.classList.add('invisible');
+}
+
+function getRandomInt() {
+    return Math.floor(Math.random() * (8 - 0 + 1)) + 0;
+}
+
+const aiPlay = () => {
+    const chooseTile = () => {
+            let randomNum = getRandomInt();
+            if (gameBoardModule.gameTiles[randomNum].tileMark == '') {
+
+            }
+    }
 }
