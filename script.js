@@ -2,8 +2,12 @@ const players = [];
 let outcome;
 
 const game = (() => {
+    let outcome;
     let playerTurn = true;
     let multiplayer = true;
+    const resetOutcome = () => {
+        outcome = null;
+    }
     const switchPlayerTurn = () => {
         playerTurn = !playerTurn;
     }
@@ -32,15 +36,39 @@ const game = (() => {
                     winningTiles.push(`tile-${winningCombos[i][2] + 1}`);
                     winningTiles.forEach(tile => document.querySelector(`#${tile}`).childNodes[0].classList.add('winning-tile'));
                     if(currentBoard[winningCombos[i][0]].tileMark == '✕') {
-                        return `player-one`;
-                    } else { return `player-two`; }
+                        outcome = `player-one`;
+                    } else { outcome = `player-two`; }
                     break;
                 } else { continue; }
             }
         }
-        if (currentBoard.every(tile => tile.tileMark != '')){ return `tie`; }
+        if (currentBoard.every(tile => tile.tileMark != '')){ outcome = `tie`; }
+
+        if (outcome != null && outcome != `tie`) {
+            let tiles = [];
+            tiles = document.querySelectorAll('.tile');
+            tiles.forEach(tile => tile.removeEventListener('click', markTile));
+            gameDisplay.updateDisplay(outcome);
+        } else if (outcome == `tie`) {
+            gameDisplay.updateDisplay(outcome);
+        } else {
+            gameDisplay.updateDisplay(1);
+        }
     }
-    return { checkForWinningCombo, switchPlayerTurn, getPlayerTurn, SwitchMultiplayer, getMultiplayer }
+    const resetGameBoard = () => {
+        let tiles = [];
+        tiles = document.querySelectorAll('.tile');
+        tiles.forEach(tile => tile.innerHTML = '');
+        tiles.forEach(tile => tile.addEventListener('click', markTile));
+        gameBoardModule.resetTiles();
+        gameDisplay.resetGameStatus();
+        game.resetOutcome();
+        let select = document.querySelector('#display-play-again');
+        select.classList.add('invisible');
+        select = document.querySelector('#display-new-game');
+        select.classList.add('invisible');
+    }
+    return { resetGameBoard, resetOutcome, checkForWinningCombo, switchPlayerTurn, getPlayerTurn, SwitchMultiplayer, getMultiplayer }
 })();
 
 const gameDisplay = (() => {
@@ -116,10 +144,10 @@ const gameBoardModule = (() => {
     }
     const gameTiles = generateGameTiles();
     const getGameBoard = () => { return gameTiles };
-    const resetGameBoard = () => {
+    const resetTiles = () => {
         gameTiles.forEach(tile => tile.tileMark = '');
     }
-    return { getGameBoard, setTileMark, resetGameBoard, gameTiles };
+    return { getGameBoard, setTileMark, resetTiles, gameTiles };
 })();
 
 
@@ -299,7 +327,7 @@ const dynamicGameDisplay = (() => {
     gameStatusDisplay.appendChild(newGameButtonDiv);
 
     newGameButtonWrapper.addEventListener('click', function(){location.reload()});
-    playAgainButtonWrapper.addEventListener('click', resetGameBoard);
+    playAgainButtonWrapper.addEventListener('click', resetGame);
 })();
 
 function markTile() {
@@ -308,6 +336,17 @@ function markTile() {
     if (game.getPlayerTurn() == true) {
         newMark.classList.add('tic-tac-style');
         newMark.innerHTML = players[0].getMark();
+        if (game.getMultiplayer() == false && game.getPlayerTurn() == true) {
+            tiles = document.querySelectorAll('.tile');
+            console.log(tiles);
+            tiles.forEach(tile => tile.removeEventListener('click', markTile));
+            console.log(`ai playing...`);
+            game.switchPlayerTurn();
+            setTimeout(function () {
+                aiPlay.chooseTile();
+                tiles.forEach(tile => tile.addEventListener('click', markTile));
+            }, 1000);
+        }
     }
     else if (game.getMultiplayer() == true && game.getPlayerTurn() == false) {
         newMark.classList.add('toe-style');
@@ -328,17 +367,7 @@ function markTile() {
         let playerOne = document.getElementById('player-one');
         playerOne.classList.add('has-turn');
     }
-    outcome = game.checkForWinningCombo(gameBoardModule.getGameBoard());
-    if (outcome != null && outcome != `tie`) {
-        let tiles = [];
-        tiles = document.querySelectorAll('.tile');
-        tiles.forEach(tile => tile.removeEventListener('click', markTile));
-        gameDisplay.updateDisplay(outcome);
-    } else if (outcome == `tie`) {
-        gameDisplay.updateDisplay(outcome);
-    } else {
-        gameDisplay.updateDisplay(1);
-    }
+    game.checkForWinningCombo(gameBoardModule.getGameBoard());
 }
 
 const updateTileMark = (tileId, tileMark) => {
@@ -372,7 +401,7 @@ function closeForm() {
 function generatePlayers(playerOneName, playerTwoName, multiplayer) {
     if (multiplayer == false) {
         players.push(Player(playerOneName, '✕'));
-        players.push(Player('Computer', '〇'));
+        players.push(Player('AI', '〇'));
     } else {
         players.push(Player(playerOneName, '✕'));
         players.push(Player(playerTwoName, '〇'));
@@ -387,28 +416,30 @@ function updatePlayerNames() {
     playerTwo.innerHTML = players[1].getName();
 }
 
-function resetGameBoard() {
-    let tiles = [];
-    tiles = document.querySelectorAll('.tile');
-    tiles.forEach(tile => tile.innerHTML = '');
-    tiles.forEach(tile => tile.addEventListener('click', markTile));
-    gameBoardModule.resetGameBoard();
-    gameDisplay.resetGameStatus();
-    let select = document.querySelector('#display-play-again');
-    select.classList.add('invisible');
-    select = document.querySelector('#display-new-game');
-    select.classList.add('invisible');
+function resetGame() {
+    game.resetGameBoard();
 }
 
-function getRandomInt() {
-    return Math.floor(Math.random() * (8 - 0 + 1)) + 0;
-}
-
-const aiPlay = () => {
+const aiPlay = (() => {
     const chooseTile = () => {
             let randomNum = getRandomInt();
+            console.log(randomNum);
+            console.log(`tile-${randomNum} has ${gameBoardModule.gameTiles[randomNum].tileMark}`)
             if (gameBoardModule.gameTiles[randomNum].tileMark == '') {
-
+                let whichTile = document.querySelector(`#tile-${randomNum}`);
+                let newMark = document.createElement('div');
+                newMark.classList.add('toe-style');
+                newMark.innerHTML = players[1].getMark();
+                whichTile.appendChild(newMark);
+                whichTile.removeEventListener('click', markTile);
+                updateTileMark(`#tile-${randomNum}`, newMark.innerHTML);
+            } else {
+                console.log('not empty, choosing again...');
+                chooseTile();
             }
     }
-}
+    const getRandomInt = () => {
+        return Math.floor(Math.random() * (8 - 0 + 1)) + 0;
+    }
+    return { chooseTile };
+})();
