@@ -40,11 +40,15 @@ const game = (() => {
                     winningTiles.forEach(tile => document.querySelector(`#${tile}`).childNodes[0].classList.add('winning-tile'));
                     if(currentBoard[winningCombos[i][0]].tileMark == '✕') {
                         outcome = `player-one`;
-                        switchMultiplayer();
+                        if(getMultiplayer() == false) {
+                            switchMultiplayer();
+                        }
 
                     } else { 
                         outcome = `player-two`;
-                        switchMultiplayer(); 
+                        if(getMultiplayer() == false) {
+                            switchMultiplayer();
+                        }
                     }
                     break;
                 } else { continue; }
@@ -358,7 +362,6 @@ function markTile() {
 
     if (game.getMultiplayer() == false && game.getPlayerTurn() == true) {
         tiles = document.querySelectorAll('.tile');
-        console.log(tiles);
         tiles.forEach(tile => tile.removeEventListener('click', markTile));
         console.log(`ai playing...`);
         game.switchPlayerTurn();
