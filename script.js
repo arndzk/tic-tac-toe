@@ -2,10 +2,16 @@ const players = [];
 let outcome;
 
 const game = (() => {
-    let stopAI = false;
+    let stopAI = true;
     let outcome;
     let playerTurn = true;
     let multiplayer = true;
+    const getStopAI = () => {
+        return stopAI;
+    }
+    const switchStopAI = () => {
+        stopAI = !stopAI;
+    }
     const resetOutcome = () => {
         outcome = null;
     }
@@ -42,7 +48,7 @@ const game = (() => {
                     if(currentBoard[winningCombos[i][0]].tileMark == '✕') {
                         outcome = `player-one`;
                         if(getMultiplayer() == false) {
-                            stopAI = true;
+                            switchStopAI();
                         }
 
                     } else { 
@@ -78,8 +84,23 @@ const game = (() => {
         select.classList.add('invisible');
         select = document.querySelector('#display-new-game');
         select.classList.add('invisible');
+        if (game.getPlayerTurn() == false) {
+            let playerOne = document.getElementById('player-one');
+            playerOne.classList.remove('has-turn');
+            let playerTwo = document.getElementById('player-two');
+            playerTwo.classList.add('has-turn');
+        } else {
+            let playerTwo = document.getElementById('player-two');
+            playerTwo.classList.remove('has-turn');
+            let playerOne = document.getElementById('player-one');
+            playerOne.classList.add('has-turn');
+        }
+        if (game.getStopAI() == true) {
+            console.log(`making sure AI stays on...`)
+            game.switchStopAI();
+        }
     }
-    return { stopAI, resetPlayerTurn, resetGameBoard, resetOutcome, checkForWinningCombo, switchPlayerTurn, getPlayerTurn, switchMultiplayer, getMultiplayer }
+    return { switchStopAI, getStopAI, resetPlayerTurn, resetGameBoard, resetOutcome, checkForWinningCombo, switchPlayerTurn, getPlayerTurn, switchMultiplayer, getMultiplayer }
 })();
 
 const gameDisplay = (() => {
@@ -358,7 +379,7 @@ function markTile() {
 
     game.checkForWinningCombo(gameBoardModule.getGameBoard());
 
-    if (game.stopAI == false && game.getPlayerTurn() == true) {
+    if (game.getStopAI() == false && game.getPlayerTurn() == true) {
         tiles = document.querySelectorAll('.tile');
         tiles.forEach(tile => tile.removeEventListener('click', markTile));
         console.log(`ai playing...`);
@@ -395,6 +416,7 @@ function closeForm() {
     console.log(ai);
     if (ai.checked) {
         game.switchMultiplayer();
+        game.switchStopAI();
         console.log('ai will be on!');
     } else {
         console.log('ai will be off!');
