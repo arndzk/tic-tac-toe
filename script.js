@@ -2,6 +2,7 @@ const players = [];
 let outcome;
 
 const game = (() => {
+    let stopAI = false;
     let outcome;
     let playerTurn = true;
     let multiplayer = true;
@@ -41,14 +42,11 @@ const game = (() => {
                     if(currentBoard[winningCombos[i][0]].tileMark == '✕') {
                         outcome = `player-one`;
                         if(getMultiplayer() == false) {
-                            switchMultiplayer();
+                            stopAI = true;
                         }
 
                     } else { 
                         outcome = `player-two`;
-                        if(getMultiplayer() == false) {
-                            switchMultiplayer();
-                        }
                     }
                     break;
                 } else { continue; }
@@ -81,7 +79,7 @@ const game = (() => {
         select = document.querySelector('#display-new-game');
         select.classList.add('invisible');
     }
-    return { resetPlayerTurn, resetGameBoard, resetOutcome, checkForWinningCombo, switchPlayerTurn, getPlayerTurn, switchMultiplayer, getMultiplayer }
+    return { stopAI, resetPlayerTurn, resetGameBoard, resetOutcome, checkForWinningCombo, switchPlayerTurn, getPlayerTurn, switchMultiplayer, getMultiplayer }
 })();
 
 const gameDisplay = (() => {
@@ -360,7 +358,7 @@ function markTile() {
 
     game.checkForWinningCombo(gameBoardModule.getGameBoard());
 
-    if (game.getMultiplayer() == false && game.getPlayerTurn() == true) {
+    if (game.stopAI == false && game.getPlayerTurn() == true) {
         tiles = document.querySelectorAll('.tile');
         tiles.forEach(tile => tile.removeEventListener('click', markTile));
         console.log(`ai playing...`);
