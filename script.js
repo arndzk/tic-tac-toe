@@ -95,7 +95,7 @@ const game = (() => {
             let playerOne = document.getElementById('player-one');
             playerOne.classList.add('has-turn');
         }
-        if (game.getStopAI() == true) {
+        if (game.getStopAI() == true && game.getMultiplayer() == false) {
             console.log(`making sure AI stays on...`)
             game.switchStopAI();
         }
